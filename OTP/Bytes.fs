@@ -13,12 +13,10 @@ module Bytes =
         bytes
         |> Convert.ToBase64String
         
+    let isSameLength a b =
+        (a |> Array.length) = (b |> Array.length)
+        
     let xor first (second:byte[]) =
-        try
-            first
-            |> Array.mapi (fun i _ ->
-                first.[i] ^^^ second.[i]
-            )
-            |> Ok
-        with ex ->
-            Error ex.Message
+        first
+        |> Array.mapi (fun i _ ->
+            first.[i] ^^^ second.[i])

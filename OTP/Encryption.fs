@@ -1,30 +1,36 @@
 ﻿namespace OTP
 
 module Encryption =
-    
-    let private validate key plaintext =
-        if (String.length key) = (String.length plaintext)
-        then Ok (key, plaintext)
-        else Error "Key must be equal to the length of the message."
-    
+
+    let validate key message =
+        let key =
+            key
+            |> String.toBytes
+ 
+        let isSameLength =
+            message
+            |> Bytes.isSameLength key
+        
+        if isSameLength
+        then Ok (key, message)
+        else Error "Key and plaintext/ciphertext are not the same length."
+        
     let encrypt key plaintext =
         plaintext
-        |> validate key
-        |> Result.bind (fun (key, plaintext) ->
-            plaintext
-            |> String.toBytes
-            |> Bytes.xor (key |> String.toBytes)
-            |> Result.map (fun ciphertext ->
-                ciphertext
-                |> Bytes.toBase64String
-            )
+        |> String.toBytes
+        |> validate key 
+        |> Result.map (fun (key, ciphertext) ->
+            ciphertext
+            |> Bytes.xor key
+            |> Bytes.toBase64String
         )
-  
+
     let decrypt key ciphertext =
         ciphertext
         |> String.fromBase64String
-        |> Bytes.xor (key |> String.toBytes)
-        |> Result.map (fun plaintext ->
+        |> validate key
+        |> Result.map (fun (key, plaintext) ->
             plaintext
+            |> Bytes.xor key
             |> Bytes.toString
         )

@@ -25,13 +25,13 @@ let main argv =
             |> Console.ReadLine
             
         match selection with
-        | "1" -> message |> Encryption.encrypt key 
+        | "1" -> message |> Encryption.encrypt key
         | "2" -> message |> Encryption.decrypt key
         | _ -> Error "Bad selection."
             
     match result with
     | Ok message ->
-        sprintf "Message: %s" message
+        sprintf "Output: %s" message
         |> Console.WriteLine 
     | Error error ->
         sprintf "Error: %s" error
