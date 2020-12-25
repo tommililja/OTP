@@ -1,1 +1,1 @@
-One time pad in F#
+One-time pad in F#
