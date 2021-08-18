@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OneTimePad.Console", "OneTimePad.Console\OneTimePad.Console.fsproj", "{1660D1B6-FF18-4CF8-81FA-54544E6CBE6D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OneTimePad.Tests", "OneTimePad.Tests\OneTimePad.Tests.fsproj", "{42944736-F511-4B34-B42A-0FE5B4AB7731}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OneTimePad", "OneTimePad\OneTimePad.fsproj", "{E468F867-9FC3-4A5A-8B20-7D9D522D55EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1660D1B6-FF18-4CF8-81FA-54544E6CBE6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1660D1B6-FF18-4CF8-81FA-54544E6CBE6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1660D1B6-FF18-4CF8-81FA-54544E6CBE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1660D1B6-FF18-4CF8-81FA-54544E6CBE6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42944736-F511-4B34-B42A-0FE5B4AB7731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42944736-F511-4B34-B42A-0FE5B4AB7731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42944736-F511-4B34-B42A-0FE5B4AB7731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42944736-F511-4B34-B42A-0FE5B4AB7731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E468F867-9FC3-4A5A-8B20-7D9D522D55EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E468F867-9FC3-4A5A-8B20-7D9D522D55EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E468F867-9FC3-4A5A-8B20-7D9D522D55EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E468F867-9FC3-4A5A-8B20-7D9D522D55EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
