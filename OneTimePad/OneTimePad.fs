@@ -4,11 +4,11 @@ open OneTimePad.ActivePatterns
 
 module OneTimePad =
     let private validate key message =
-        let length =
+        let lengths =
             (key |> CipherKey.getLength),
             (message |> Message.getLength)
 
-        match length with
+        match lengths with
         | Same -> Ok (key, message)
         | Different -> Error "Key and plaintext/ciphertext must be the same length."
     

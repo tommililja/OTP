@@ -4,7 +4,9 @@ open System
 open System.Text
 
 type CipherKey = private CipherKey of byte []
+
 type Ciphertext = private Ciphertext of byte []
+
 type Plaintext = private Plaintext of byte []
 
 type internal Message =
@@ -15,7 +17,10 @@ module CipherKey =
     let create key =
         key
         |> String.isNotNullOrEmpty (nameof key)
-        |> Result.map (Encoding.UTF32.GetBytes >> CipherKey)
+        |> Result.map (
+            Encoding.UTF32.GetBytes
+            >> CipherKey
+        )
 
     let internal asBytes (CipherKey c) = c
     
@@ -25,7 +30,10 @@ module Ciphertext =
     let create ciphertext =
         ciphertext
         |> String.isNotNullOrEmpty (nameof ciphertext)
-        |> Result.map (Convert.FromBase64String >> Ciphertext)
+        |> Result.map (
+            Convert.FromBase64String
+            >> Ciphertext
+        )
     
     let internal asBytes (Ciphertext c) = c
         
@@ -37,7 +45,10 @@ module Plaintext =
     let create plaintext =
         plaintext
         |> String.isNotNullOrEmpty (nameof plaintext)
-        |> Result.map (Encoding.UTF32.GetBytes >> Plaintext)
+        |> Result.map (
+            Encoding.UTF32.GetBytes
+            >> Plaintext
+        )
         
     let internal asBytes (Plaintext p) = p
         
@@ -47,7 +58,11 @@ module Plaintext =
     
 module internal Message = 
     let asBytes = function
-        | Encrypted m -> m |> Ciphertext.asBytes
-        | Decrypted m -> m |> Plaintext.asBytes
+        | Encrypted message ->
+            message
+            |> Ciphertext.asBytes
+        | Decrypted message ->
+            message
+            |> Plaintext.asBytes
     
     let getLength = asBytes >> Array.length

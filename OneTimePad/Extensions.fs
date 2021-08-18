@@ -3,15 +3,13 @@
 open System
 
 module ActivePatterns =
-    let (|Same|Different|) (val1, val2) =
-        if val1 = val2
-        then Same
-        else Different
+    let (|Same|Different|) = function
+        | first, second when first = second -> Same
+        | _ -> Different
 
-    let (|Empty|NotEmpty|) str =
-        if String.IsNullOrEmpty(str)
-        then Empty
-        else NotEmpty
+    let (|Empty|NotEmpty|) = function
+        | str when String.IsNullOrEmpty(str) -> Empty
+        | _ -> NotEmpty
 
 module String =
     open ActivePatterns
