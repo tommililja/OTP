@@ -5,6 +5,7 @@ open Xunit
 open Expecto
 
 module Tests =
+    
     let key =
         "testkey"
         |> CipherKey.create

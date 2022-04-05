@@ -3,17 +3,21 @@
 open System
 open System.Text
 
-type CipherKey = private CipherKey of byte []
-
-type Ciphertext = private Ciphertext of byte []
-
-type Plaintext = private Plaintext of byte []
+type CipherKey =
+    private CipherKey of byte []
+    
+type Ciphertext =
+    private Ciphertext of byte []
+    
+type Plaintext =
+    private Plaintext of byte []
 
 type internal Message =
     | Encrypted of Ciphertext
     | Decrypted of Plaintext
 
 module CipherKey =
+    
     let create key =
         key
         |> String.isNotNullOrEmpty (nameof key)
@@ -27,6 +31,7 @@ module CipherKey =
     let internal getLength = asBytes >> Array.length
 
 module Ciphertext =
+    
     let create ciphertext =
         ciphertext
         |> String.isNotNullOrEmpty (nameof ciphertext)
@@ -42,6 +47,7 @@ module Ciphertext =
         |> Convert.ToBase64String 
 
 module Plaintext =
+    
     let create plaintext =
         plaintext
         |> String.isNotNullOrEmpty (nameof plaintext)
@@ -56,7 +62,8 @@ module Plaintext =
         plaintext
         |> Encoding.UTF32.GetString 
     
-module internal Message = 
+module internal Message =
+    
     let asBytes = function
         | Encrypted message ->
             message

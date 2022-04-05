@@ -3,6 +3,7 @@
 open System
 
 module ActivePatterns =
+    
     let (|Same|Different|) = function
         | first, second when first = second -> Same
         | _ -> Different

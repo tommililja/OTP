@@ -1,29 +1,32 @@
 ﻿namespace OneTimePad
 
-open OneTimePad.ActivePatterns
+open ActivePatterns
 
 module OneTimePad =
+    
     let private validate key message =
         let lengths =
-            (key |> CipherKey.getLength),
-            (message |> Message.getLength)
+            key |> CipherKey.getLength,               
+            message |> Message.getLength
 
         match lengths with
         | Same -> Ok (key, message)
         | Different -> Error "Key and plaintext/ciphertext must be the same length."
     
-    let private convert (key, message) =
-        (key |> CipherKey.asBytes),
-        (message |> Message.asBytes)
-    
+    let private xor (key, message) =
+        let key =
+            key
+            |> CipherKey.asBytes         
+        
+        message
+        |> Message.asBytes
+        |> Array.mapi (fun i m ->
+            key.[i] ^^^ m
+        )
+        
     let private oneTimePad key message =
         validate key message
-        |> Result.map (convert >> (fun (key, message) ->
-            message
-            |> Array.mapi (fun i _ ->
-                key.[i] ^^^ message.[i]
-            )
-        ))
+        |> Result.map xor
         
     let encrypt key plaintext =
         plaintext

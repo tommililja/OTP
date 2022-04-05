@@ -1,3 +1,6 @@
 namespace OneTimePad.Tests
 
-module Program = let [<EntryPoint>] main _ = 0
+module Program =
+    
+    let [<EntryPoint>] main _ =
+        0
