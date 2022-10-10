@@ -6,14 +6,14 @@ open Expecto
 
 module Tests =
     
-    let key =
+    let private key =
         "testkey"
-        |> CipherKey.create
+        |> Key.create
         |> Result.orFailWith
 
-    let message =
+    let private message =
         "testmsg"
-        |> Plaintext.create
+        |> PlainText.create
         |> Result.orFailWith
 
     [<Fact>]
@@ -24,8 +24,8 @@ module Tests =
             |> Result.orFailWith
         
         ciphertext
-        |> Ciphertext.asString
-        |> Expect.equal "AAAAAAAAAAAAAAAAAAAAAAYAAAAWAAAAHgAAAA=="  
+        |> CipherText.asString
+        |> Expect.equal "AAAAAAAAAAAAAAAAAAAAAAYAAAAWAAAAHgAAAA=="
 
     [<Fact>]
     let decrypt () =
@@ -39,5 +39,5 @@ module Tests =
             |> OneTimePad.decrypt key
             |> Result.orFailWith
 
-        message
-        |> Expect.equal plaintext
+        plaintext
+        |> Expect.equal message

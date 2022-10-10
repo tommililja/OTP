@@ -3,73 +3,57 @@
 open System
 open System.Text
 
-type CipherKey =
-    private CipherKey of byte []
-    
-type Ciphertext =
-    private Ciphertext of byte []
-    
-type Plaintext =
-    private Plaintext of byte []
+type Key = internal Key of byte[]
 
-type internal Message =
-    | Encrypted of Ciphertext
-    | Decrypted of Plaintext
-
-module CipherKey =
+module Key =
     
-    let create key =
-        key
-        |> String.isNotNullOrEmpty (nameof key)
-        |> Result.map (
-            Encoding.UTF32.GetBytes
-            >> CipherKey
-        )
+    let create =
+        String.isNotNullOrEmpty
+        |>> Encoding.UTF32.GetBytes
+        |>> Key
 
-    let internal asBytes (CipherKey c) = c
+    let internal asBytes (Key c) = c
     
     let internal getLength = asBytes >> Array.length
-
-module Ciphertext =
     
-    let create ciphertext =
-        ciphertext
-        |> String.isNotNullOrEmpty (nameof ciphertext)
-        |> Result.map (
-            Convert.FromBase64String
-            >> Ciphertext
-        )
+    let asString = asBytes >> Convert.ToBase64String
+
+type Ciphertext = internal Ciphertext of byte[]
+
+module CipherText =
+    
+    let create =
+        String.isNotNullOrEmpty
+        |>> Convert.FromBase64String
+        |>> Ciphertext
     
     let internal asBytes (Ciphertext c) = c
         
-    let asString (Ciphertext ciphertext) =
-        ciphertext
-        |> Convert.ToBase64String 
+    let asString = asBytes >> Convert.ToBase64String 
 
-module Plaintext =
+type Plaintext = internal Plaintext of byte[]
+
+module PlainText =
     
-    let create plaintext =
-        plaintext
-        |> String.isNotNullOrEmpty (nameof plaintext)
-        |> Result.map (
-            Encoding.UTF32.GetBytes
-            >> Plaintext
-        )
+    let create =
+        String.isNotNullOrEmpty
+        |>> Encoding.UTF32.GetBytes
+        |>> Plaintext
         
     let internal asBytes (Plaintext p) = p
         
-    let asString (Plaintext plaintext) =
-        plaintext
-        |> Encoding.UTF32.GetString 
+    let asString = asBytes >> Encoding.UTF32.GetString 
+    
+type internal Message =
+    | Encrypted of Ciphertext
+    | Decrypted of Plaintext 
     
 module internal Message =
     
     let asBytes = function
         | Encrypted message ->
-            message
-            |> Ciphertext.asBytes
+            CipherText.asBytes message
         | Decrypted message ->
-            message
-            |> Plaintext.asBytes
+            PlainText.asBytes message
     
     let getLength = asBytes >> Array.length

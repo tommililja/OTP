@@ -1,52 +1,55 @@
 open System
+open Microsoft.FSharp.Core
 open OneTimePad
 
-let encrypt key message =
-    message
-    |> Plaintext.create
-    |> Result.bind (OneTimePad.encrypt key)
-    |> Result.map Ciphertext.asString
+let private encrypt key =
+    PlainText.create
+    |>= OneTimePad.encrypt key
+    |>> CipherText.asString
 
-let decrypt key message =
-    message
-    |> Ciphertext.create
-    |> Result.bind (OneTimePad.decrypt key)
-    |> Result.map Plaintext.asString
+let private decrypt key =
+    CipherText.create
+    |>= OneTimePad.decrypt key
+    |>> PlainText.asString
 
-[<EntryPoint>]
-let main _ =
+let run _args = result {
+    
     "1. Encrypt"
     |> Console.WriteLine
     
     "2. Decrypt"
     |> Console.WriteLine
     
-    let selection =
+    let! selection =
         "Select: "
         |> Console.Write
         |> Console.ReadLine
-    
-    let key =
-        Console.Write "Key: "
+        |> Selection.parse
+
+    let! key =
+        "Key: "
+        |> Console.Write 
         |> Console.ReadLine
-        |> CipherKey.create
-    
-    let result =
-        key
-        |> Result.bind (fun key ->
-            let message =
-                Console.Write "Message: "
-                |> Console.ReadLine
-                
-            match selection with
-            | "1" -> encrypt key message
-            | "2" -> decrypt key message
-            | _ -> Error "Invalid selection."  
-        )
-    
-    match result with
-        | Ok message -> $"Ok: %s{message}"
-        | Error error -> $"Error: %s{error}"
-        |> Console.WriteLine
+        |> Key.create
+        
+    let message =
+        "Message: "
+        |> Console.Write
+        |> Console.ReadLine
+        
+    let oneTimePad =
+        match selection with
+        | Encrypt -> encrypt key message
+        | Decrypt -> decrypt key message
+        
+    return! oneTimePad
+}
+
+[<EntryPoint>]
+let main args =
+    args
+    |> run
+    |> Result.id
+    |> Console.WriteLine
     
     0
