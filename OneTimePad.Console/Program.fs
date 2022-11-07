@@ -1,16 +1,17 @@
 open System
 open Microsoft.FSharp.Core
+open OneTimePad.Console
 open OneTimePad
 
 let private encrypt key =
-    PlainText.create
-    |>= OneTimePad.encrypt key
-    |>> CipherText.asString
+    Plaintext.create
+    |>= Plaintext.encrypt key
+    |>> Ciphertext.asString
 
 let private decrypt key =
-    CipherText.create
-    |>= OneTimePad.decrypt key
-    |>> PlainText.asString
+    Ciphertext.create
+    |>= Ciphertext.decrypt key
+    |>> Plaintext.asString
 
 let run _args = result {
     

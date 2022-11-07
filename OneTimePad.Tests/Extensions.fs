@@ -2,6 +2,6 @@
 
 module Result =
     
-    let orFailWith = function
+    let failOnError = function
         | Ok v -> v
         | Error e -> failwith e

@@ -1,4 +1,4 @@
-namespace OneTimePad
+namespace OneTimePad.Console
 
 type Selection =
     | Encrypt

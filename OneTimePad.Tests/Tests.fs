@@ -9,35 +9,34 @@ module Tests =
     let private key =
         "testkey"
         |> Key.create
-        |> Result.orFailWith
+        |> Result.failOnError
 
     let private message =
         "testmsg"
-        |> PlainText.create
-        |> Result.orFailWith
+        |> Plaintext.create
+        |> Result.failOnError
 
     [<Fact>]
     let encrypt () =
         let ciphertext =
             message
-            |> OneTimePad.encrypt key
-            |> Result.orFailWith
+            |> Plaintext.encrypt key
+            |> Result.failOnError
         
         ciphertext
-        |> CipherText.asString
+        |> Ciphertext.asString
         |> Expect.equal "AAAAAAAAAAAAAAAAAAAAAAYAAAAWAAAAHgAAAA=="
 
     [<Fact>]
     let decrypt () =
         let ciphertext =
             message
-            |> OneTimePad.encrypt key
-            |> Result.orFailWith
+            |> Plaintext.encrypt key
+            |> Result.failOnError
             
         let plaintext =
             ciphertext
-            |> OneTimePad.decrypt key
-            |> Result.orFailWith
-
-        plaintext
-        |> Expect.equal message
+            |> Ciphertext.decrypt key
+            |> Result.failOnError
+  
+        Expect.equal plaintext message 

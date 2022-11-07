@@ -5,6 +5,10 @@ open System.Text
 
 type Key = internal Key of byte[]
 
+type Plaintext = internal Plaintext of byte[]
+
+type Ciphertext = internal Ciphertext of byte[]
+
 module Key =
     
     let create =
@@ -18,9 +22,7 @@ module Key =
     
     let asString = asBytes >> Convert.ToBase64String
 
-type Ciphertext = internal Ciphertext of byte[]
-
-module CipherText =
+module Ciphertext =
     
     let create =
         String.isNotNullOrEmpty
@@ -28,12 +30,24 @@ module CipherText =
         |>> Ciphertext
     
     let internal asBytes (Ciphertext c) = c
+    
+    let decrypt key ciphertext = result {
+        let key = Key.asBytes key
+        let ciphertext = asBytes ciphertext
+
+        do!
+            "Key and ciphertext must be of equal length."
+            |> Array.compare key ciphertext 
+        
+        return
+            ciphertext
+            |> Array.xor key
+            |> Plaintext
+    }
         
     let asString = asBytes >> Convert.ToBase64String 
 
-type Plaintext = internal Plaintext of byte[]
-
-module PlainText =
+module Plaintext =
     
     let create =
         String.isNotNullOrEmpty
@@ -42,18 +56,18 @@ module PlainText =
         
     let internal asBytes (Plaintext p) = p
         
-    let asString = asBytes >> Encoding.UTF32.GetString 
-    
-type internal Message =
-    | Encrypted of Ciphertext
-    | Decrypted of Plaintext 
-    
-module internal Message =
-    
-    let asBytes = function
-        | Encrypted message ->
-            CipherText.asBytes message
-        | Decrypted message ->
-            PlainText.asBytes message
-    
-    let getLength = asBytes >> Array.length
+    let encrypt key plaintext = result {
+        let key = Key.asBytes key
+        let plaintext = asBytes plaintext
+
+        do!
+            "Key and plaintext must be of equal length."
+            |> Array.compare key plaintext 
+        
+        return
+            plaintext
+            |> Array.xor key
+            |> Ciphertext
+    }
+        
+    let asString = asBytes >> Encoding.UTF32.GetString

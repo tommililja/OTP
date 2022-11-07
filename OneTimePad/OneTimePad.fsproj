@@ -9,7 +9,6 @@
     <ItemGroup>
         <Compile Include="Extensions.fs" />
         <Compile Include="Types.fs" />
-        <Compile Include="OneTimePad.fs" />
     </ItemGroup>
 
     <ItemGroup>
