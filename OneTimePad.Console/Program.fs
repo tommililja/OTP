@@ -1,7 +1,7 @@
 open System
 open Microsoft.FSharp.Core
-open OneTimePad.Console
 open OneTimePad
+open OneTimePad.Console
 
 let private encrypt key =
     Plaintext.create
@@ -13,7 +13,7 @@ let private decrypt key =
     |>= Ciphertext.decrypt key
     |>> Plaintext.asString
 
-let run _args = result {
+let result = result {
     
     "1. Encrypt"
     |> Console.WriteLine
@@ -38,19 +38,14 @@ let run _args = result {
         |> Console.Write
         |> Console.ReadLine
         
-    let oneTimePad =
+    let pad =
         match selection with
         | Encrypt -> encrypt key message
         | Decrypt -> decrypt key message
         
-    return! oneTimePad
+    return! pad
 }
 
-[<EntryPoint>]
-let main args =
-    args
-    |> run
-    |> Result.id
-    |> Console.WriteLine
-    
-    0
+result
+|> Result.id
+|> Console.WriteLine

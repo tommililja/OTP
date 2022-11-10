@@ -18,6 +18,7 @@ module Tests =
 
     [<Fact>]
     let encrypt () =
+        
         let ciphertext =
             message
             |> Plaintext.encrypt key
@@ -29,6 +30,7 @@ module Tests =
 
     [<Fact>]
     let decrypt () =
+        
         let ciphertext =
             message
             |> Plaintext.encrypt key

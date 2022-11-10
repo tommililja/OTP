@@ -16,11 +16,11 @@ module Key =
         |>> Encoding.UTF32.GetBytes
         |>> Key
 
-    let internal asBytes (Key c) = c
-    
-    let internal getLength = asBytes >> Array.length
-    
+    let asBytes (Key key) = key
+
     let asString = asBytes >> Convert.ToBase64String
+        
+    let getLength = asBytes >> Array.length
 
 module Ciphertext =
     
@@ -28,24 +28,14 @@ module Ciphertext =
         String.isNotNullOrEmpty
         |>> Convert.FromBase64String
         |>> Ciphertext
-    
-    let internal asBytes (Ciphertext c) = c
-    
-    let decrypt key ciphertext = result {
-        let key = Key.asBytes key
-        let ciphertext = asBytes ciphertext
-
-        do!
-            "Key and ciphertext must be of equal length."
-            |> Array.compare key ciphertext 
-        
-        return
-            ciphertext
-            |> Array.xor key
-            |> Plaintext
-    }
-        
+       
+    let asBytes (Ciphertext ciphertext) = ciphertext
+       
     let asString = asBytes >> Convert.ToBase64String 
+       
+    let decrypt (Key key) =
+        asBytes >> Pad.create key
+        |>> Plaintext
 
 module Plaintext =
     
@@ -54,20 +44,10 @@ module Plaintext =
         |>> Encoding.UTF32.GetBytes
         |>> Plaintext
         
-    let internal asBytes (Plaintext p) = p
-        
-    let encrypt key plaintext = result {
-        let key = Key.asBytes key
-        let plaintext = asBytes plaintext
-
-        do!
-            "Key and plaintext must be of equal length."
-            |> Array.compare key plaintext 
-        
-        return
-            plaintext
-            |> Array.xor key
-            |> Ciphertext
-    }
-        
+    let asBytes (Plaintext plaintext) = plaintext
+    
     let asString = asBytes >> Encoding.UTF32.GetString
+    
+    let encrypt (Key key) =
+        asBytes >> Pad.create key
+        |>> Ciphertext

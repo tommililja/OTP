@@ -4,10 +4,6 @@ open System
 
 [<AutoOpen>]
 module ActivePatterns =
-    
-    let (|Same|Different|) = function
-        | first, second when first = second -> Same
-        | _ -> Different
 
     let (|Empty|Something|) = function
         | str when String.IsNullOrEmpty str -> Empty
@@ -19,14 +15,15 @@ module String =
         | Something str -> Ok str
         | Empty -> Error "String cannot be empty."
 
+module Bool =
+    
+    let asResult error = function
+        | true -> Ok ()
+        | false -> Error error
+
 module Array =
     
-    let compare a b msg =
-        match Array.length a, Array.length b with
-        | Same -> Ok ()
-        | Different -> Error msg
-        
-    let xor (bytes:byte[]) = Array.mapi (fun i -> (^^^) bytes[i])
+    let compare a b = Array.length a = Array.length b
 
 [<AutoOpen>]
 module Result =
@@ -38,7 +35,10 @@ module Result =
     let id = function
         | Ok v -> v
         | Error e -> e
-        
+    
+[<AutoOpen>]
+module ResultBuilder =
+    
     type ResultBuilder() =
             
         member this.Bind (x, f) = Result.bind f x

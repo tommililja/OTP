@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <Compile Include="Extensions.fs" />
+        <Compile Include="Pad.fs" />
         <Compile Include="Types.fs" />
     </ItemGroup>
 
